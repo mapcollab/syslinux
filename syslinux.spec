@@ -1,21 +1,11 @@
 Summary: Simple kernel loader which boots from a FAT filesystem
 Name: syslinux
 Version: 6.03
-%define tarball_version 6.03
-Release: 6%{?dist}
+Release: 7%{?dist}
 License: GPLv2+
 Group: Applications/System
 URL: http://syslinux.zytor.com/wiki/index.php/The_Syslinux_Project
-Source0: http://www.kernel.org/pub/linux/utils/boot/syslinux/%{name}-%{tarball_version}.tar.xz
-Patch0001: 0001-Add-install-all-target-to-top-side-of-HAVE_FIRMWARE.patch
-# Backport from upstream git master to fix RHBZ #1234653
-Patch0002: 0035-SYSAPPEND-Fix-space-stripping.patch
-# From upstream ML, these should fix some GCC 5 issues, e.g. RHBZ #1263988
-# http://www.syslinux.org/archives/2015-September/024317.html
-# http://www.syslinux.org/archives/2015-September/024318.html
-Patch0003: fix-alignment-change-gcc-5.patch
-# http://www.syslinux.org/archives/2015-September/024319.html
-Patch0004: dont-guess-section-alignment.patch
+Source0: %{name}-%{version}.tar.gz
 
 # this is to keep rpmbuild from thinking the .c32 / .com / .0 / memdisk files
 # in noarch packages are a reason to stop the build.
@@ -117,18 +107,19 @@ SYSLINUX binaries and modules for 64-bit UEFI systems
 %endif
 
 %prep
-%setup -q -n syslinux-%{tarball_version}
+%setup -q -n %{name}-%{version}
 git init
 git config user.email "%{name}-owner@fedoraproject.org"
 git config user.name "Fedora Ninjas"
 git add .
 git commit -a -q -m "%{version} baseline."
-git am %{patches} </dev/null
+sed 's|> /dev/null 2>&1||' -i efi/check-gnu-efi.sh
 
 %build
-make bios clean all
+make bios #clean all
 %ifarch %{x86_64}
-make efi64 clean all
+make clean
+make efi64 #clean all
 %endif
 
 %install
@@ -190,6 +181,7 @@ rm -rf %{buildroot}
 %else
 %{_datadir}/syslinux/syslinux64.exe
 %endif
+%{_docdir}/%{name}/sample/*
 
 %files perl
 %defattr(-,root,root)
@@ -213,7 +205,7 @@ rm -rf %{buildroot}
 %{!?_licensedir:%global license %%doc}
 %license COPYING
 %dir %{_datadir}/syslinux/com32
-%{_datadir}/syslinux/com32
+%{_datadir}/syslinux/com32/*
 
 %files extlinux
 %{_sbindir}/extlinux
@@ -265,6 +257,9 @@ elif [ -f /boot/extlinux.conf ]; then \
 fi
 
 %changelog
+* Mon Nov 02 2015 Tomasz Rostanski <tomasz.rostanski@thalesgroup.com> - 6.03-7
+- initial build for mps
+
 * Thu Oct 15 2015 Adam Williamson <awilliam@redhat.com> - 6.03-6
 - backport GCC 5 fixes from upstream ML: RHBZ #1263988, #1264012
 
