@@ -176,11 +176,12 @@ rm -rf %{buildroot}
 %dir %{_datadir}/syslinux/dosutil
 %{_datadir}/syslinux/dosutil/*
 %{_datadir}/syslinux/diag/*
-%ifarch %{ix86}
-%{_datadir}/syslinux/syslinux.exe
-%else
-%{_datadir}/syslinux/syslinux64.exe
-%endif
+# installed in nonlinux package
+#%ifarch %{ix86}
+#%{_datadir}/syslinux/syslinux.exe
+#%else
+#%{_datadir}/syslinux/syslinux64.exe
+#%endif
 %{_docdir}/%{name}/sample/*
 
 %files perl
