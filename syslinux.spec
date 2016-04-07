@@ -116,6 +116,8 @@ git commit -a -q -m "%{version} baseline."
 sed 's|> /dev/null 2>&1||' -i efi/check-gnu-efi.sh
 
 %build
+# do not use CFLAGS from build.env; seems dangerous for syslinux
+unset CFLAGS CXXFLAGS
 make bios #clean all
 %ifarch %{x86_64}
 make clean
