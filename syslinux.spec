@@ -1,7 +1,7 @@
 Summary: Simple kernel loader which boots from a FAT filesystem
 Name: syslinux
 Version: 6.03
-Release: 8%{?dist}
+Release: 9%{?dist}
 License: GPLv2+
 Group: Applications/System
 URL: http://syslinux.zytor.com/wiki/index.php/The_Syslinux_Project
@@ -260,6 +260,9 @@ elif [ -f /boot/extlinux.conf ]; then \
 fi
 
 %changelog
+* Thu Apr 21 2016 Michal Gawlik <michal.gawlik@thalesgroup.com> 6.03-9
+- spec: do not use global CFLAGS (michal.gawlik@thalesgroup.com)
+
 * Tue Nov 03 2015 Tomasz Rostanski <tomasz.rostanski@thalesgroup.com.pl> 6.03-8
 - tito: use ReleaseTagger (tomasz.rostanski@thalesgroup.com.pl)
 - syslinux.spec: fix syslinux64.exe installed in two packages
