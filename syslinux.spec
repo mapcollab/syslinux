@@ -260,6 +260,9 @@ elif [ -f /boot/extlinux.conf ]; then \
 fi
 
 %changelog
+* Wed Sep 14 2016 Tomasz Rostanski <tomasz.rostanski@thalesgroup.com> 6.04-0.1
+- syslinux-6.04-pre1+ git revision 852bd3fb 
+
 * Thu Apr 21 2016 Michal Gawlik <michal.gawlik@thalesgroup.com> 6.03-9
 - spec: do not use global CFLAGS (michal.gawlik@thalesgroup.com)
 
